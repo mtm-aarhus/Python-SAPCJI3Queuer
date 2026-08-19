@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot_framework"
+version = "0.0.1"
+authors = [
+  { name="ITK Development", email="itk-rpa@mkb.aarhus.dk" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+]
+# Deliberately lighter than the dispatcher and performer: this robot drives no
+# browser, no SAP GUI and no database, so selenium, pywin32, psutil and pyodbc are
+# all unnecessary. Pillow stays because error_screenshot.py uses PIL.ImageGrab.
+dependencies = [
+    "OpenOrchestrator == 3.*",
+    "Pillow == 10.*"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pylint",
+  "flake8"
+]
