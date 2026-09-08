@@ -36,12 +36,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     ready_at = queue_element.created_date + timedelta(minutes=config.WAIT_MINUTES)
     remaining_s = (ready_at - datetime.now()).total_seconds()
 
-    if remaining_s > config.MAX_SLEEP_S:
-        raise BusinessError(
-            f"Element {queue_element.reference} would need a {remaining_s:.0f}s wait, "
-            f"which is past the {config.MAX_SLEEP_S}s ceiling. Its created_date "
-            f"({queue_element.created_date}) looks wrong, or a clock is off."
-        )
+
 
     if remaining_s > 0:
         orchestrator_connection.log_trace(

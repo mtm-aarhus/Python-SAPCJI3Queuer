@@ -40,12 +40,18 @@ MAX_TASK_COUNT = 100
 # allowed to go looking for it. Only a head start: the performer still polls the
 # spool overview and still fails if the job never turns up.
 #
-# Each element waits out the remainder of its own 15 minutes, so a batch does not
-# cost 15 minutes per window. The dispatcher creates them one per window as it works
-# through SAP, so each element is already most of the way ripe when its turn comes
-# and only sleeps the gap since the previous one. Ten windows submitted 90 seconds
-# apart take about 15 minutes in total, not 150.
-WAIT_MINUTES = 15
+# Each element waits out the remainder of its own head start, so a batch does not cost
+# this many minutes per window. The dispatcher creates them one per window as it works
+# through SAP, so each element is already most of the way ripe when its turn comes and
+# only sleeps the gap since the previous one. Ten windows submitted 90 seconds apart
+# take about this long in total, not ten times it.
+#
+# 12 minutes: SM37 shows report RKPEP003 taking 320-445 seconds for a full week, so ~7
+# minutes is normal and this leaves comfortable margin. The performer polls regardless,
+# so too short a head start is not fatal - it just means the performer blocks while it
+# waits, which is the thing this robot exists to avoid. Tune from the "ready after Ns"
+# line the sandbox writes to its run log.
+WAIT_MINUTES = 12
 
 # Safety net against a wrong created_date or an unsynced clock: never sleep longer
 # than this in a single element.
